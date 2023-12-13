@@ -2,11 +2,15 @@ function statement(invoice, plays) {
   let totalAmount = 0;
   let volumeCredits = 0;
   let result = `Statement for ${invoice.customer}\n`;
-  // Intl.NumberFormat 用於格式化數字，將其轉換為貨幣格式-可以設置為各個國家的貨幣格式
-  const format = new Intl.NumberFormat("en-US",
-                        { style: "currency", currency: "USD",
-                          minimumFractionDigits: 2 }).format;
 
+  function format(aNumber) {
+    // Intl.NumberFormat 用於格式化數字，將其轉換為貨幣格式-可以設置為各個國家的貨幣格式
+    return new Intl.NumberFormat("en-US",{ 
+      style: "currency", 
+      currency: "USD",
+      minimumFractionDigits: 2 
+    }).format(aNumber);
+  }
 
   function playFor(aPerformance) {
     return plays[aPerformance.playID]
