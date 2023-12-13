@@ -12,7 +12,7 @@ function statement(invoice, plays) {
     return plays[aPerformance.playID]
   }
 
-  function amountFor(aPerformance, play) {
+  function amountFor(aPerformance) {
     let result = 0;
     switch (playFor(aPerformance).type) {
       case "tragedy":
@@ -36,7 +36,7 @@ function statement(invoice, plays) {
   }
 
   for (let perf of invoice.performances) {
-    this.thisAmount = amountFor(perf, playFor(perf));
+    this.thisAmount = amountFor(perf);
 
     volumeCredits += Math.max(perf.audience - 30, 0);
     if ("comedy" === playFor(perf).type) volumeCredits += Math.floor(perf.audience / 5);
