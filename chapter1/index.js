@@ -6,30 +6,13 @@ function statement(invoice, plays) {
   function enrichPerformance(aPerformance) {
     const result = Object.assign({}, aPerformance);
     result.play = playFor(result);
-
+    result.amount = amountFor(result);
     return result;
   }
 
   function playFor(aPerformance) {
     return plays[aPerformance.playID]
   }
-  
-  return renderPlainText(statementData, plays);
-}
-
-function renderPlainText(data, plays) {
-  let result = `Statement for ${data.customer}\n`;
-
-  function usd(aNumber) {
-    // Intl.NumberFormat 用於格式化數字，將其轉換為貨幣格式-可以設置為各個國家的貨幣格式
-    return new Intl.NumberFormat("en-US",{ 
-      style: "currency", 
-      currency: "USD",
-      minimumFractionDigits: 2, 
-    }).format(aNumber / 100);
-  }
-
-  
 
   function amountFor(aPerformance) {
     let result = 0;
@@ -54,6 +37,21 @@ function renderPlainText(data, plays) {
     return result;
   }
   
+  return renderPlainText(statementData, plays);
+}
+
+function renderPlainText(data, plays) {
+  let result = `Statement for ${data.customer}\n`;
+
+  function usd(aNumber) {
+    // Intl.NumberFormat 用於格式化數字，將其轉換為貨幣格式-可以設置為各個國家的貨幣格式
+    return new Intl.NumberFormat("en-US",{ 
+      style: "currency", 
+      currency: "USD",
+      minimumFractionDigits: 2, 
+    }).format(aNumber / 100);
+  }
+
   function volumeCreditsFor(aPerformance) {
     let result = 0;
     result += Math.max(aPerformance.audience -30, 0);
@@ -72,14 +70,14 @@ function renderPlainText(data, plays) {
   function totalAmount() {
     let result = 0;
     for (let perf of data.performances) {
-      result += amountFor(perf);
+      result += perf.amount
     }
     return result;
   }
 
   for (let perf of data.performances) {
     // print line for this order
-    result += ` ${perf.play.name}: ${usd(amountFor(perf))} (${perf.audience} seats)\n`;
+    result += ` ${perf.play.name}: ${usd(perf.amount)} (${perf.audience} seats)\n`;
   }
 
   result += `Amount owed is ${usd(totalAmount())}\n`;
