@@ -8,11 +8,7 @@ class PerformancesCalculator {
     let result = 0;
     switch (this.play.type) {
       case "tragedy":
-        result = 40000;
-        if (this.performance.audience > 30) {
-          result += 1000 * (this.performance.audience -30);
-        }
-        break;
+        throw 'bad thing';
       case "comedy": 
         result = 30000;
         if (this.performance.audience > 20) {
@@ -36,11 +32,19 @@ class PerformancesCalculator {
 }
 
 class TragedyCalculator extends PerformancesCalculator {
+  get amount() {
+    let result = 40000;
 
+    if (this.performance.audience > 30) {
+      result += 1000 * (this.performance.audience -30);
+    }
+
+    return result;
+  }
 }
 
 class ComedyCalculator extends PerformancesCalculator {
-  
+
 }
 
 function createPerformanceCalculator(aPerformance, aPlay) {
@@ -63,7 +67,7 @@ export default function createStatementData(invoice, plays) {
   result.totalVolumeCredits = totalVolumeCredits(result);
 
   function enrichPerformance(aPerformance) {
-    const calculator = new PerformancesCalculator(aPerformance, playFor(aPerformance));
+    const calculator = createPerformanceCalculator(aPerformance, playFor(aPerformance));
 
     const result = Object.assign({}, aPerformance);
     result.play = calculator.play;
