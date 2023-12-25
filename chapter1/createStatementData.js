@@ -35,6 +35,10 @@ class PerformancesCalculator {
   }
 }
 
+function createPerformanceCalculator(aPerformance, play) {
+  return new PerformancesCalculator(aPerformance, play);
+}
+
 
 export default function createStatementData(invoice, plays) {
   const result = {};
